@@ -1,8 +1,6 @@
 
 # Illustrated Character Face Super-Deformation via Unsupervised Image-to-Image Translation
 
-# Illustrated Character Face Super-Deformation via Unsupervised Image-to-Image Translation
-
 [[Paper](#)] | [[Code](#)]
 
 <div align="center">
