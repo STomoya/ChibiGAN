@@ -18,10 +18,10 @@ services:
         source: .
         target: ${WORKING_DIR}
       - type: bind
-        source: /mnt/D/Data/chibi/faces/solo
+        source: ./path/to/detailed
         target: ${WORKING_DIR}/data/images/detailed
       - type: bind
-        source: /mnt/D/Data/chibi/faces/chibi
+        source: ./path/to/deformed
         target: ${WORKING_DIR}/data/images/deformed
     shm_size: '8gb'
     working_dir: ${WORKING_DIR}
