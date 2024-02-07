@@ -1,0 +1,84 @@
+
+# don't change
+train_method: chibigan
+
+experiment:
+  # experiment name
+  name: chibigan
+
+model:
+  # arguments for generator
+  generator:
+    class_name: model.chibigan.Generator
+    image_size: ${config.data.image_size}
+    latent_dim: 512
+    style_dim: null
+    syn_in_channels: null
+    channels: 64
+    max_channels: 512
+    bottom: 4
+    filter_size: 4
+    map_num_layers: 8
+    pixel_norm: true
+    act_name: lrelu
+    map_lr_scale: 0.01
+  # arguments for discriminator
+  discriminator:
+    class_name: model.chibigan.Discriminator
+    image_size: ${config.data.image_size}
+    in_channels: null
+    channels: 64
+    max_channels: 512
+    mbsd_group_size: 4
+    mbsd_channels: 1
+    bottom: 4
+    filter_size: 4
+    act_name: lrelu
+
+  # harmonizer
+  h_config_file: null
+  h_weight_file: null
+
+data:
+  data_root:
+    - ./data/images/detailed
+    - ./data/images/deformed
+
+  transforms:
+    - name: OrnamentAugmentation
+      data_root: ${config.data.ornament_root}
+      p: 0.5
+      color_range: [0, 255]
+      alpha_blur_kernel_size: 5
+    - name: Resize
+      size:
+        - ${config.data.image_size}
+        - ${config.data.image_size}
+    - name: RandomHorizontalFlip
+      p: 0.5
+    - name: ToTensor
+    - name: Normalize
+      mean: 0.5
+      std: 0.5
+
+
+train:
+
+  gp_lambda: 3.0
+  gp_every: 16
+
+  optimizer:
+    # optimizer for generator
+    generator:
+      class_name: torch.optim.Adam
+      lr: 0.001
+      betas: [0.0, 0.99]
+    # optimizer for discriminator
+    discriminator:
+      class_name: torch.optim.Adam
+      lr: 0.001
+      betas: [0.0, 0.99]
+
+  diffaugment_policy: 'color,translation'
+
+  ema_decay: 0.999

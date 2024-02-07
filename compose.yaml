@@ -1,0 +1,40 @@
+services:
+  torch:
+    build:
+      context: .
+      dockerfile: ./docker/torch/Dockerfile
+      args:
+        # [format] pytorch/pytorch:${PYTORCH_VERSION}-cuda${PYTORCH_CUDA_VERSION}-cudnn${PYTORCH_CUDNN_VERSION}-devel
+        # See https://hub.docker.com/r/pytorch/pytorch/tags?page=1&name=devel
+        - PYTORCH_VERSION=1.10.0
+        - PYTORCH_CUDA_VERSION=11.3
+        - PYTORCH_CUDNN_VERSION=8
+        # User ID. for acounts with UID!=1000
+        - UID=${UID:-1000}
+        # - USERNAME=torchuser
+
+    volumes:
+      - type: bind
+        source: .
+        target: ${WORKING_DIR}
+      - type: bind
+        source: /mnt/D/Data/chibi/faces/solo
+        target: ${WORKING_DIR}/data/images/detailed
+      - type: bind
+        source: /mnt/D/Data/chibi/faces/chibi
+        target: ${WORKING_DIR}/data/images/deformed
+    shm_size: '8gb'
+    working_dir: ${WORKING_DIR}
+    environment:
+      - CUDA_HOME=${CUDA_HOME}
+      - XDG_CACHE_HOME=${WORKING_DIR}/${XDG_CACHE_HOME}
+      - TORCH_EXTENSIONS_DIR=${WORKING_DIR}/${XDG_CACHE_HOME}/${TORCH_EXTENSIONS_DIR}
+    user: ${UID:-1000}
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              device_ids: ['0']

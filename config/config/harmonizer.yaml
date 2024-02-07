@@ -1,0 +1,45 @@
+
+# don't change
+train_method: harmonizer
+
+experiment:
+  # experiment name
+  name: harmonizer
+
+model:
+  # arguments for generator
+  generator:
+    class_name: model.chibigan.Harmonizer
+    image_size: ${config.data.image_size}
+    bottom: null
+    channels: 64
+    max_channels: 512
+    resblocks: 2
+    act_name: 'lrelu'
+    filter_size: 4
+    io_channels: 3
+  # arguments for discriminator
+  discriminator:
+    class_name: model.chibigan.PatchDiscriminator
+    num_layers: 3
+    channels: 64
+    act_name: 'lrelu'
+    filter_size: 4
+    in_channels: 3
+
+train:
+
+  id_lambda: 10.0
+  gan_lambda: 0.5
+
+  optimizer:
+    # optimizer for generator
+    generator:
+      class_name: torch.optim.Adam
+      lr: 0.0002
+      betas: [0.5, 0.999]
+    # optimizer for discriminator
+    discriminator:
+      class_name: torch.optim.Adam
+      lr: 0.0002
+      betas: [0.5, 0.999]

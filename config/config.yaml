@@ -1,0 +1,81 @@
+defaults:
+  - _self_
+  - config: ???
+
+config:
+
+  train_method: null
+
+  experiment:
+    # experiment name
+    name: experiment
+    # folder for saving checkpoint
+    ckpt_folder: checkpoint
+    # filename for logging
+    log_file: log.log
+    # logging interval
+    log_interval: 100
+    # file to output execution status.
+    exec_status_output: ./execstatus.txt
+
+  data:
+    # dataset root folder
+    data_root: ./data/images
+    # ornaments root folder
+    ornament_root: ./data/ornaments
+
+    # size of image
+    image_size: 128
+
+    # arguments for DataLoader
+    loader:
+      shuffle: true
+      drop_last: true
+      num_workers: 4
+      batch_size: 4
+      pin_memory: true
+
+    # transforms
+    transforms: null
+
+
+  model:
+    # arguments for generator
+    generator:
+      class_name: null
+    # arguments for discriminator
+    discriminator:
+      class_name: null
+
+  train:
+    # epochs to train (selectively use iterations)
+    epochs: 100
+    # iterations to train (selectively use epochs)
+    iterations: -1
+
+    # number of samples for eval
+    test_sample: 16
+
+    optimizer:
+      # optimizer for generator
+      generator:
+        class_name: torch.optim.Adam
+      # optimizer for discriminator
+      discriminator:
+        class_name: torch.optim.Adam
+
+
+    # policy for DiffAugment
+    diffaugment_policy: null
+
+    # save running output every
+    running: 10
+
+    # save mode every
+    save: 1000
+
+  env:
+    # device. 'cpu' or 'cuda' or 'cuda:{0,1,2...}'
+    device: cuda
+    # enable AMP?
+    amp: false

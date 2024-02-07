@@ -1,0 +1,15 @@
+-f https://dl.fbaipublicfiles.com/detectron2/wheels/cu113/torch1.10/index.html
+# detectron
+detectron2
+# configuration
+hydra-core
+# vision
+opencv-python
+scikit-image
+# visualization
+matplotlib
+tqdm
+# cpp extension
+ninja
+# LPIPS
+lpips
