@@ -54,17 +54,17 @@ def train(config):
     Ddet.to(device)
     Ddef.to(device)
 
-    # load pre-trained Blender weights
+    # load pre-trained Hramonizer weights
     assert mcfg.h_config_file is not None and mcfg.h_weight_file is not None, 'specify a pre-trained Blender'
     assert os.path.exists(mcfg.h_config_file) and os.path.exists(
         mcfg.h_weight_file
     ), 'You seem to not have a pre-trained model, or the path is incorrect'
-    bcfg = OmegaConf.load(mcfg.h_config_file).config.model
-    B = utils.construct_class_by_name(**bcfg.generator)
-    b_state_dict = torch.load(mcfg.h_weight_file, map_location='cpu')
-    B.load_state_dict(b_state_dict)
-    freeze(B)
-    B.to(device)
+    hcfg = OmegaConf.load(mcfg.h_config_file).config.model
+    H = utils.construct_class_by_name(**hcfg.generator)
+    h_state_dict = torch.load(mcfg.h_weight_file, map_location='cpu')
+    H.load_state_dict(h_state_dict)
+    freeze(H)
+    H.to(device)
 
     # optimizer
     optcfg = tcfg.optimizer
@@ -86,7 +86,7 @@ def train(config):
         'ChibiGAN',
         log_nvidia_smi_at=100,
     )
-    status.log_stuff(config, dataset, G, optim_G, Ddet, optim_D, B)
+    status.log_stuff(config, dataset, G, optim_G, Ddet, optim_D, H)
 
     # others
     scaler = GradScaler() if amp else None
@@ -103,8 +103,8 @@ def train(config):
             with autocast(amp):
                 # B forward (we don't need grad)
                 with torch.no_grad():
-                    detailed = B(detailed)
-                    deformed = B(deformed)
+                    detailed = H(detailed)
+                    deformed = H(deformed)
 
                 # G forward
                 _, x_det = G(z_det)
@@ -172,5 +172,3 @@ def train(config):
 
             if status.is_end():
                 break
-
-    status.plot(folder.root / 'loss')
