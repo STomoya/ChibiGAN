@@ -81,13 +81,18 @@ Open an issue for bugs or questions about the software. PRs are welcomed.
 
 ## Citation
 
-```text
-@article{
-    authors={Sawada, Tomoya and Katsurai, Marie},
-    title={Illustrated Character Face Deformation via Unsupervised Image-to-Image Translation},
-    journal={Multimedia System},
-    volume={},
-    pages={}
+```bibtex
+@article{Sawada2024,
+  author={Sawada, Tomoya and Katsurai, Marie},
+  title={Illustrated character face super-deformation via unsupervised image-to-image translation},
+  journal={Multimedia Systems},
+  year={2024},
+  volume={30},
+  number={2},
+  pages={63},
+  issn={1432-1882},
+  doi={10.1007/s00530-023-01255-y},
+  url={https://doi.org/10.1007/s00530-023-01255-y}
 }
 ```
 
